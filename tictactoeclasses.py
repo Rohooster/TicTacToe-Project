@@ -11,42 +11,43 @@ class GameLoopManager:
         self.board = Board()
         self.playerManager = PlayerManager()
 
-
-    #List of things to edit on this large annoying function
-    '''Replace getBoard as see fit
-    Completely remove all computer aspects from the game GameLoop
-    Change the turn if else statement because the turns are taken by a different function(add that in too)
-    Replace whogoesfirst implementation
-    
-    '''
-
+    # function that we put most of the main “game loop”
+    # code into, and it actually uses the functions and runs the game.
     def gameItself(self):
         gameIsPlaying = True
 
         while gameIsPlaying:
+            # Sets turn
             turn = self.playerManager.getLetter()
-
+            # creates board and sets it up, move cycle happens
             self.board.drawBoard()
             move = self.playerManager.getPlayerMove(self.board.isSpaceFree)
             self.board.makeMove(turn, move)
-
+            # if winner is detected, this runs
             if self.board.isWinner(turn):
                 self.board.drawBoard()
                 print(f'Hooray! Player {turn} has won the game!')
                 gameIsPlaying = False
+            # in case of a tie, this runs
             else:
                 if self.board.isBoardFull():
                     self.drawBoard()
                     print('The game is a tie!')
                     break
+                # switches turn if there is no win and its not a tie
                 else:
                     self.playerManager.switchTurn()
 
+    # has the primary while statement(while true:) inside of it,
+    # and this function was created in order to sort out some errors
+    # and make it easier for us to allow the user to pick how many times they played.
     def gameLoop(self):
         print('Welcome to Tic Tac Toe!')
 
         while True:
             # Reset the board
+            self.board.resetBoard()
+            # switches turn
             turn = self.playerManager.getLetter()
             print(f'The player using letter {turn} will go first.')
             # runs the actual game
@@ -55,6 +56,7 @@ class GameLoopManager:
             if not self.playAgain():
                 break
 
+    # function was the unedited playAgain function we received in the skeleton code.
     def playAgain(self):
         # This function returns True if the player wants to play again, otherwise it returns False.
         print('Do you want to play again? (yes or no)')
@@ -109,8 +111,9 @@ class Board:
     # isSpaceFree returns true if the space is open to be filled on the board
     def isSpaceFree(self, move):
         # Return true if the passed move is free on the passed board.
-        return self.board[move] == ' '
+        return self.board[int(move)] == ' '
 
+    # Determines if the board is full by checking if there are any spaces left.
     def isBoardFull(self):
         # Return True if every space on the board has been taken. Otherwise return False.
         for i in range(1, 10):
@@ -132,15 +135,24 @@ class Board:
                 (self.board[7] == le and self.board[5] == le and self.board[3] == le) or  # diagonal
                 (self.board[9] == le and self.board[5] == le and self.board[1] == le))  # diagonal
 
-#PlayerManager
-#   GetPlayerMove
-#   switch_turns(not done yet)
+    # resetBoard consists of a for loop resetting all changes to the board.
+    def resetBoard(self):
+        for x in range(1, 10):
+            self.board[x] = ' '
+
+
+"""
+THIS class handles player-related functions and manages the turn state(x or o).
+It contains three functions: getPlayerMove, getLetter, and switchTurn 
+"""
+
 
 class PlayerManager:
     def __init__(self):
+        # class variable, manages turn
         self.turn_counter = 0
 
-    # try passing things that are not available as args to function first before making instance vars:)
+    # Asks the player to input a number between 1 and 9, and returns and integer version of that number
     def getPlayerMove(self, isSpaceFree):
         # Let the player type in his move.
         move = ' '
@@ -149,6 +161,8 @@ class PlayerManager:
             move = input()
         return int(move)
 
+    # Returns the letter of the of the current turn(x or o),
+    # by looking at a specialized counter variable that keeps track of it
     def getLetter(self):
         # implementation goes here
         if self.turn_counter == 0:
@@ -156,5 +170,6 @@ class PlayerManager:
         else:
             return 'O'
 
+    # Changes the turn from x to o
     def switchTurn(self):
         self.turn_counter = 1 - self.turn_counter
