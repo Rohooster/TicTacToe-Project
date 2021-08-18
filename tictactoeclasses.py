@@ -64,7 +64,7 @@ class GameLoopManager:
 """
 This is the class we put all board related functions into. 
 We put: drawBoard, getBoardCopy, makeMove, isSpaceFree, isWinner, 
-and resetBoard into this class. Every function except resetBoard 
+and resetBoard into this class; every function except resetBoard 
 is copied from the skeleton code. 
 """
 
