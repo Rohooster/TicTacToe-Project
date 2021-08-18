@@ -17,6 +17,29 @@ class GameLoopManager:
     Replace whogoesfirst implementation
     
     '''
+
+    def gameItself(self):
+        gameIsPlaying = True
+
+        while gameIsPlaying:
+            turn = self.playerManager.getLetter()
+
+            self.board.drawBoard()
+            move = self.playerManager.getPlayerMove(self.board.isSpaceFree)
+            self.board.makeMove(turn, move)
+
+            if self.board.isWinner(turn):
+                self.board.drawBoard()
+                print(f'Hooray! Player {turn} has won the game!')
+                gameIsPlaying = False
+            else:
+                if self.board.isBoardFull():
+                    self.drawBoard()
+                    print('The game is a tie!')
+                    break
+                else:
+                    self.playerManager.switchTurn()
+
     def gameLoop(self):
         print('Welcome to Tic Tac Toe!')
 
@@ -24,43 +47,10 @@ class GameLoopManager:
             # Reset the board
             turn = self.playerManager.getLetter()
             print(f'The player using letter {turn} will go first.')
-            gameIsPlaying = True
 
-            while gameIsPlaying:
-                turn = self.playerManager.getLetter()
-                if turn == 'X':
-                    self.board.drawBoard(self)
-                    move = self.playerManager.getPlayerMove(self.board.isSpaceFree)
-                    self.board.makeMove(turn, move)
 
-                    if self.board.isWinner(turn):
-                        self.board.drawBoard()
-                        print(f'Hooray! Player {turn} has won the game!')
-                        gameIsPlaying = False
-                    else:
-                        if self.board.isBoardFull():
-                            self.drawBoard()
-                            print('The game is a tie!')
-                            break
-                        else:
-                            self.playerManager.switchTurn()
+            self.gameItself()
 
-                else:
-                    # TODO tomorrow
-                    move = getComputerMove(theBoard, computerLetter)
-                    makeMove(theBoard, computerLetter, move)
-
-                    if isWinner(theBoard, computerLetter):
-                        drawBoard(theBoard)
-                        print('The computer has beaten you! You lose.')
-                        gameIsPlaying = False
-                    else:
-                        if isBoardFull(theBoard):
-                            drawBoard(theBoard)
-                            print('The game is a tie!')
-                            break
-                        else:
-                            turn = 'player'
 
             if not self.playAgain():
                 break
@@ -122,7 +112,7 @@ class Board:
     def isBoardFull(self):
         # Return True if every space on the board has been taken. Otherwise return False.
         for i in range(1, 10):
-            if self.isSpaceFree(self.board, i):
+            if self.isSpaceFree(i):
                 return False
         return True
 
