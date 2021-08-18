@@ -1,8 +1,10 @@
-#GameLoopManager
-#   game loop function
-#   playAgain
+"""
+This is the main class we used to run the tic tac toe game.
+The other classes were put in as arguments, and we put the
+main functions of the skeleton code here. These were:
+gameLoop, playAgain, and gameItself.
+"""
 
-import random
 
 class GameLoopManager:
     def __init__(self):
@@ -47,11 +49,9 @@ class GameLoopManager:
             # Reset the board
             turn = self.playerManager.getLetter()
             print(f'The player using letter {turn} will go first.')
-
-
+            # runs the actual game
             self.gameItself()
-
-
+            # checks if user wants to play again
             if not self.playAgain():
                 break
 
@@ -61,21 +61,20 @@ class GameLoopManager:
         return input().lower().startswith('y')
 
 
-#Board
-#   We will need an array for this class, as we need a board to work these on XXX
-#   board generator(display) XXX
-#   add a letter to the board(makemove) XXX
-#   getBoardCopy XXX
-#   isSpaceFree XXX
-#   chooseRandomMoveFromList(validate move) XXX
-#   isBoardFull XXX
-#   isWinner XXX
+"""
+This is the class we put all board related functions into. 
+We put: drawBoard, getBoardCopy, makeMove, isSpaceFree, isWinner, 
+and resetBoard into this class. Every function except resetBoard 
+is copied from the skeleton code. 
+"""
 
 
 class Board:
     def __init__(self):
+        # instance variable, maintains the state of the board.
         self.board = [' '] * 10
 
+    # The method draws the board onto the console.
     def drawBoard(self):
         # This function prints out the board that it was passed.
 
@@ -92,19 +91,22 @@ class Board:
         print(' ' + self.board[1] + ' | ' + self.board[2] + ' | ' + self.board[3])
         print('   |   |')
 
-
+    # getBoardCopy creates a duplicate of the board and returns it to visually update the player to the game
     def getBoardCopy(self):
         # Make a duplicate of the board list and return it the duplicate.
         dupeBoard = []
 
+        # gets the values of the board
         for i in self.board:
             dupeBoard.append(i)
 
         return dupeBoard
 
+    # makeMove takes parameters to define what the player wants to move as their turn
     def makeMove(self, letter, move):
         self.board[move] = letter
 
+    # isSpaceFree returns true if the space is open to be filled on the board
     def isSpaceFree(self, move):
         # Return true if the passed move is free on the passed board.
         return self.board[move] == ' '
@@ -116,9 +118,10 @@ class Board:
                 return False
         return True
 
+    # isWinner checks every way the player can win every turn, and returns true if a player has won
     def isWinner(self, le):
         # Given a board and a player's letter, this function returns True if that player has won.
-        # We use bo instead of board and le instead of letter so we don't have to type as much.
+        # We use le instead of letter so we don't have to type as much.
 
         return ((self.board[7] == le and self.board[8] == le and self.board[9] == le) or  # across the top
                 (self.board[4] == le and self.board[5] == le and self.board[6] == le) or  # across the middle
@@ -134,7 +137,6 @@ class Board:
 #   switch_turns(not done yet)
 
 class PlayerManager:
-    #make sure you edit functions
     def __init__(self):
         self.turn_counter = 0
 
@@ -148,7 +150,7 @@ class PlayerManager:
         return int(move)
 
     def getLetter(self):
-        #implementation goes here
+        # implementation goes here
         if self.turn_counter == 0:
             return 'X'
         else:
@@ -156,20 +158,3 @@ class PlayerManager:
 
     def switchTurn(self):
         self.turn_counter = 1 - self.turn_counter
-
-
-
-
-#Functions we will remove:
-#   getComputerMove
-#   whoGoesFirst
-#   inputPlayerLetter
-
-
-
-
-
-
-
-
-
