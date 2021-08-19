@@ -1,3 +1,9 @@
+# Abhiraam Eranti and Rohan Sontakke
+# Ashton
+# Computer Science, Part 2
+# 8/18/2021
+
+
 """
 This is the main class we used to run the tic tac toe game.
 The other classes were put in as arguments, and we put the
