@@ -37,7 +37,7 @@ class GameLoopManager:
             # in case of a tie, this runs
             else:
                 if self.board.isBoardFull():
-                    self.drawBoard()
+                    self.board.drawBoard()
                     print('The game is a tie!')
                     break
                 # switches turn if there is no win and its not a tie
